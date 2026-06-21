@@ -53,3 +53,11 @@ mascotas_hogar <- mod118 %>%
     .groups = "drop"
   )
 
+#6. Unión de las bases----------------------------------
+enaho_2025_mascotas <- mod100 %>%
+  left_join(mascotas_hogar, by = c("conglome", "vivienda", "hogar"))
+
+#Aun dentro de julio-diciembre, el módulo 118 fue una sub-muestra,
+#así que algunos hogares seguirán con NA: representan hogares que
+#no fueron seleccionados para esa sub-muestra, no "sin mascota"
+sum(is.na(enaho_2025_mascotas$tiene_mascota))
