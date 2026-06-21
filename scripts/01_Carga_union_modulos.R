@@ -40,5 +40,16 @@ mod118 <- mod118 %>% clean_names()
 #en vez de mezclar hogares que nunca pudieron tener esa información.
 mod100 <- mod100 %>% filter(mes >= "7")
 
-
+#5. Preparación del módulo de mascotas--------------------
+#El módulo 118 tiene hasta 3 filas por hogar (perro, gato, otro);
+#antes de unirlo con mod100 hay que resumirlo a una sola fila por hogar
+mascotas_hogar <- mod118 %>%
+  group_by(conglome, vivienda, hogar) %>%
+  summarise(
+    tiene_perro        = any(p118a1 == 1 & p118b == 1, na.rm = TRUE),
+    tiene_gato         = any(p118a1 == 2 & p118b == 1, na.rm = TRUE),
+    tiene_otra_mascota = any(p118a1 == 3 & p118b == 1, na.rm = TRUE),
+    tiene_mascota      = any(p118b == 1, na.rm = TRUE),
+    .groups = "drop"
+  )
 
